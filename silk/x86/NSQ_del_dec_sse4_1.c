@@ -146,6 +146,20 @@ void silk_NSQ_del_dec_sse4_1(
     NSQ_del_dec_struct  *psDD;
     SAVE_STACK;
 
+#ifdef OPUS_CHECK_ASM
+    silk_nsq_state NSQ_c;
+    SideInfoIndices psIndices_c;
+    opus_int8 pulses_c[ MAX_FRAME_LENGTH ];
+    const opus_int8 *const pulses_a = pulses;
+
+    ( void )pulses_a;
+    silk_memcpy( &NSQ_c, NSQ, sizeof( NSQ_c ) );
+    silk_memcpy( &psIndices_c, psIndices, sizeof( psIndices_c ) );
+    silk_memcpy( pulses_c, pulses, sizeof( pulses_c ) );
+    silk_NSQ_del_dec_c( psEncC, &NSQ_c, &psIndices_c, x16, pulses_c, PredCoef_Q12, LTPCoef_Q14, AR_Q13, HarmShapeGain_Q14, Tilt_Q14, LF_shp_Q14, Gains_Q16,
+                       pitchL, Lambda_Q10, LTP_scale_Q14 );
+#endif
+
     /* Set unvoiced lag to the previous one, overwrite later for voiced */
     lag = NSQ->lagPrev;
 
@@ -307,6 +321,13 @@ void silk_NSQ_del_dec_sse4_1(
     /* Save quantized speech signal */
     silk_memmove( NSQ->xq,           &NSQ->xq[           psEncC->frame_length ], psEncC->ltp_mem_length * sizeof( opus_int16 ) );
     silk_memmove( NSQ->sLTP_shp_Q14, &NSQ->sLTP_shp_Q14[ psEncC->frame_length ], psEncC->ltp_mem_length * sizeof( opus_int32 ) );
+
+#ifdef OPUS_CHECK_ASM
+    silk_assert( !memcmp( &NSQ_c, NSQ, sizeof( NSQ_c ) ) );
+    silk_assert( !memcmp( &psIndices_c, psIndices, sizeof( psIndices_c ) ) );
+    silk_assert( !memcmp( pulses_c, pulses_a, sizeof( pulses_c ) ) );
+#endif
+
     RESTORE_STACK;
 }
 
