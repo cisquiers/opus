@@ -64,7 +64,20 @@ void silk_VQ_WMat_EC_sse4_1(
     opus_int32 rate_dist_Q8_c = 0;
     opus_int   gain_Q7_c = 0;
 
-    silk_VQ_WMat_EC_c( &ind_c, &res_nrg_Q15_c, &rate_dist_Q8_c, &gain_Q7_c, XX_Q17, xX_Q17, cb_Q7, cb_gain_Q7, cl_Q5, subfr_len, max_gain_Q7, L );
+    silk_VQ_WMat_EC_c(
+        &ind_c,
+        &res_nrg_Q15_c,
+        &rate_dist_Q8_c,
+        &gain_Q7_c,
+        XX_Q17,
+        xX_Q17,
+        cb_Q7,
+        cb_gain_Q7,
+        cl_Q5,
+        subfr_len,
+        max_gain_Q7,
+        L
+    );
 #endif
 
     /* Negate and convert to new Q domain */

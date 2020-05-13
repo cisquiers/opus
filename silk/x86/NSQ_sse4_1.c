@@ -114,8 +114,24 @@ void silk_NSQ_sse4_1(
     silk_memcpy( &NSQ_c, NSQ, sizeof( NSQ_c ) );
     silk_memcpy( &psIndices_c, psIndices, sizeof( psIndices_c ) );
     silk_memcpy( pulses_c, pulses, sizeof( pulses_c ) );
-    silk_NSQ_del_dec_c( psEncC, &NSQ_c, &psIndices_c, x16, pulses_c, PredCoef_Q12, LTPCoef_Q14, AR_Q13, HarmShapeGain_Q14, Tilt_Q14, LF_shp_Q14, Gains_Q16,
-                       pitchL, Lambda_Q10, LTP_scale_Q14 );
+
+    silk_NSQ_c(
+        psEncC,
+        &NSQ_c,
+        &psIndices_c,
+        x16,
+        pulses_c,
+        PredCoef_Q12,
+        LTPCoef_Q14,
+        AR_Q13,
+        HarmShapeGain_Q14,
+        Tilt_Q14,
+        LF_shp_Q14,
+        Gains_Q16,
+        pitchL,
+        Lambda_Q10,
+        LTP_scale_Q14
+    );
 #endif
 
     NSQ->rand_seed = psIndices->Seed;
