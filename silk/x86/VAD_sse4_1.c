@@ -236,7 +236,6 @@ opus_int silk_VAD_GetSA_Q8_sse4_1(                  /* O    Return value, 0 if s
     if( psEncC->frame_length == 20 * psEncC->fs_kHz ) {
         speech_nrg = silk_RSHIFT32( speech_nrg, 1 );
     }
-
     /* Power scaling */
     if( speech_nrg <= 0 ) {
         SA_Q15 = silk_RSHIFT( SA_Q15, 1 );
