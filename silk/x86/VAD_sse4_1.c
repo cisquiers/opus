@@ -233,15 +233,15 @@ opus_int silk_VAD_GetSA_Q8_sse4_1(                  /* O    Return value, 0 if s
         speech_nrg += ( b + 1 ) * silk_RSHIFT( Xnrg[ b ] - psSilk_VAD->NL[ b ], 4 );
     }
 
+    if( psEncC->frame_length == 20 * psEncC->fs_kHz ) {
+        speech_nrg = silk_RSHIFT32( speech_nrg, 1 );
+    }
+
     /* Power scaling */
     if( speech_nrg <= 0 ) {
         SA_Q15 = silk_RSHIFT( SA_Q15, 1 );
-    } else if( speech_nrg < 32768 ) {
-        if( psEncC->frame_length == 10 * psEncC->fs_kHz ) {
-            speech_nrg = silk_LSHIFT_SAT32( speech_nrg, 16 );
-        } else {
-            speech_nrg = silk_LSHIFT_SAT32( speech_nrg, 15 );
-        }
+    } else if( speech_nrg < 16384 ) {
+        speech_nrg = silk_LSHIFT32( speech_nrg, 16 );
 
         /* square-root */
         speech_nrg = silk_SQRT_APPROX( speech_nrg );
