@@ -58,28 +58,6 @@ void silk_VQ_WMat_EC_sse4_1(
     opus_int32 bits_res_Q8, bits_tot_Q8;
     __m128i v_XX_31_Q17, v_XX_42_Q17, v_cb_row_31_Q7, v_cb_row_42_Q7, v_acc1_Q24, v_acc2_Q24;
 
-#ifdef OPUS_CHECK_ASM
-    opus_int8  ind_c = 0;
-    opus_int32 res_nrg_Q15_c = 0;
-    opus_int32 rate_dist_Q8_c = 0;
-    opus_int   gain_Q7_c = 0;
-
-    silk_VQ_WMat_EC_c(
-        &ind_c,
-        &res_nrg_Q15_c,
-        &rate_dist_Q8_c,
-        &gain_Q7_c,
-        XX_Q17,
-        xX_Q17,
-        cb_Q7,
-        cb_gain_Q7,
-        cl_Q5,
-        subfr_len,
-        max_gain_Q7,
-        L
-    );
-#endif
-
     /* Negate and convert to new Q domain */
     neg_xX_Q24[ 0 ] = -silk_LSHIFT32( xX_Q17[ 0 ], 7 );
     neg_xX_Q24[ 1 ] = -silk_LSHIFT32( xX_Q17[ 1 ], 7 );
@@ -166,6 +144,26 @@ void silk_VQ_WMat_EC_sse4_1(
     }
 
 #ifdef OPUS_CHECK_ASM
+    opus_int8  ind_c = 0;
+    opus_int32 res_nrg_Q15_c = 0;
+    opus_int32 rate_dist_Q8_c = 0;
+    opus_int   gain_Q7_c = 0;
+
+    silk_VQ_WMat_EC_c(
+        &ind_c,
+        &res_nrg_Q15_c,
+        &rate_dist_Q8_c,
+        &gain_Q7_c,
+        XX_Q17,
+        xX_Q17,
+        cb_Q7,
+        cb_gain_Q7,
+        cl_Q5,
+        subfr_len,
+        max_gain_Q7,
+        L
+    );
+
     silk_assert( *ind == ind_c );
     silk_assert( *res_nrg_Q15 == res_nrg_Q15_c );
     silk_assert( *rate_dist_Q8 == rate_dist_Q8_c );

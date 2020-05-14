@@ -84,5 +84,10 @@ opus_int64 silk_inner_prod16_aligned_64_sse4_1(
         sum = silk_SMLABB( sum, inVec1[ i ], inVec2[ i ] );
     }
 
+#ifdef OPUS_CHECK_ASM
+    opus_int64 sum_c = silk_inner_prod16_aligned_64_c( inVec1, inVec2, len );
+    silk_assert( sum == sum_c );
+#endif
+
     return sum;
 }
